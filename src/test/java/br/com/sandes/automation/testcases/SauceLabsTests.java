@@ -9,12 +9,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SaucedemoLogin {
+public class SauceLabsTests {
 
     private static WebDriver driver;
     private static TestUtils testUtils;
@@ -22,7 +23,8 @@ public class SaucedemoLogin {
     @BeforeAll
     static void setUp(){
         driver = new ChromeDriver();
-        testUtils = new TestUtils(driver);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        testUtils = new TestUtils(driver, wait);
         driver.manage().window().setSize(new Dimension(1200, 765));
         driver.get("https://www.saucedemo.com/");
 
@@ -61,9 +63,7 @@ public class SaucedemoLogin {
 
         testUtils.goToCart();
 
-        var productOnCart = driver.findElement(By.linkText("Sauce Labs Bike Light")).isDisplayed();
-
-        assertTrue(productOnCart);
+        testUtils.assertProductPresentOnCart("Sauce Labs Bike Light");
     }
 
     @Test
@@ -76,8 +76,10 @@ public class SaucedemoLogin {
 
         testUtils.goToCart();
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        testUtils.pause(5);
 
         testUtils.removeProductFromCart("sauce-labs-bike-light");
+
+        testUtils.assertProductIsNotOnCart(By.linkText("Sauce Labs Bike Light"));
     }
 }
