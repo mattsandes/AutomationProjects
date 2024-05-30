@@ -1,10 +1,7 @@
 package br.com.sandes.automation.testcases;
 
 import br.com.sandes.automation.methods.TestUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
@@ -20,21 +17,21 @@ public class SauceLabsTests {
     private static WebDriver driver;
     private static TestUtils testUtils;
 
-    @BeforeAll
-    static void setUp(){
+    @BeforeEach
+    void setUp(){
         driver = new ChromeDriver();
+        driver.get("https://www.saucedemo.com/");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         testUtils = new TestUtils(driver, wait);
         driver.manage().window().setSize(new Dimension(1200, 765));
-        driver.get("https://www.saucedemo.com/");
 
         testUtils.logOnSwagLabs(
                 "standard_user",
                 "secret_sauce");
     }
 
-    @AfterAll
-    static void tearDown(){
+    @AfterEach
+    void tearDown(){
         driver.quit();
     }
 
@@ -51,11 +48,15 @@ public class SauceLabsTests {
         var addToCartButton = driver.findElement(By.id("add-to-cart")).isDisplayed();
 
         assertTrue(addToCartButton);
+
+        testUtils.backToProducts();
     }
 
     @Test
     @DisplayName("Validate that is possible to add products on cart")
     void addProductAtCart(){
+
+        testUtils.pause(10);
 
         testUtils.clickOnProduct("Sauce Labs Bike Light");
 
@@ -70,7 +71,7 @@ public class SauceLabsTests {
     @DisplayName("Validate that is possible to remove products from cart")
     void removeProductFromCart(){
 
-        testUtils.clickOnProduct("Sauce Labs Bike Light");
+        testUtils.clickOnProduct("Sauce Labs Bolt T-Shirt");
 
         testUtils.addToCart();
 
@@ -78,8 +79,10 @@ public class SauceLabsTests {
 
         testUtils.pause(5);
 
-        testUtils.removeProductFromCart("sauce-labs-bike-light");
+        testUtils.removeProductFromCart();
 
         testUtils.assertProductIsNotOnCart(By.linkText("Sauce Labs Bike Light"));
+
+        testUtils.continueShopping();
     }
 }
