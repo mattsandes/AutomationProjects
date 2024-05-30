@@ -20,6 +20,10 @@ public class TestUtils {
         this.wait = wait;
     }
 
+    public void continueShopping(){
+        driver.findElement(By.id("continue-shopping")).click();
+    }
+
     public void logOnSwagLabs(String username, String password){
         driver.findElement(By.id("user-name")).sendKeys(username);
         driver.findElement(By.id("password")).sendKeys(password);
@@ -28,7 +32,7 @@ public class TestUtils {
     }
 
     public void clickOnProduct(String product){
-        driver.findElement(By.linkText(product)).click();
+        driver.findElement(By.xpath("//div[@data-test='inventory-item-name' and contains(text(), '" + product + "')]")).click();
     }
 
     public void addToCart(){
@@ -45,8 +49,8 @@ public class TestUtils {
         driver.findElement(By.className("shopping_cart_link")).click();
     }
 
-    public void removeProductFromCart(String product){
-        driver.findElement(By.id("remove-" + product)).click();
+    public void removeProductFromCart(){
+        driver.findElement(By.xpath("//button[contains(text(), 'Remove')]")).click();
     }
 
     public void assertProductPresentOnCart(String product){
@@ -62,5 +66,17 @@ public class TestUtils {
 
     public void pause(int seconds){
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(seconds));
+    }
+
+    public void backToProducts(){
+        driver.findElement(By.xpath("//button[@id='back-to-products']")).click();
+    }
+
+    public void removeAllProductsFromCart(){
+        this.goToCart();
+
+        for(int i = 0; i < 10; i++){
+            this.removeProductFromCart();
+        }
     }
 }
