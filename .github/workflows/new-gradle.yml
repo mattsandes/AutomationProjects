@@ -15,10 +15,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up JDK 21
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: '17'
         distribution: 'temurin'
 
     - name: Setup Gradle
@@ -36,6 +36,7 @@ jobs:
         wget -N "https://chromedriver.storage.googleapis.com/$LATEST_CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
         unzip chromedriver_linux64.zip -d /usr/local/bin/
         rm chromedriver_linux64.zip
+        sudo chmod +x /usr/local/bin/chromedriver
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
@@ -51,10 +52,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up JDK 21
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: '17'
         distribution: 'temurin'
 
     - name: Generate and submit dependency graph
