@@ -30,7 +30,14 @@ jobs:
         sudo apt-get install -y google-chrome-stable
 
     - name: Install ChromeDriver
-      uses: nanasess/setup-chromedriver@v1
+      run: |
+        CHROME_VERSION=$(google-chrome-stable --version | grep -oP '\d+\.\d+\.\d+')
+        echo "Using Chrome version $CHROME_VERSION"
+        CHROMEDRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+        echo "Using ChromeDriver version $CHROMEDRIVER_VERSION"
+        wget -N "https://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip"
+        unzip chromedriver_linux64.zip -d /usr/local/bin/
+        rm chromedriver_linux64.zip
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
