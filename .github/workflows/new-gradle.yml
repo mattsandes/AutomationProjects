@@ -24,9 +24,6 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
-    - name: Print test report link
-      run: echo "Test report: file://$GITHUB_WORKSPACE/build/reports/tests/test/index.html"
-
     - name: Install Chrome browser
       run: |
         sudo apt-get update
