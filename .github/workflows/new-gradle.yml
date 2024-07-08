@@ -40,13 +40,16 @@ jobs:
         sudo chmod +x /usr/local/bin/chromedriver
         /usr/local/bin/chromedriver --version
 
+    - name: Verify ChromeDriver Installation
+      run: |
+        ls -la /usr/local/bin/
+        if [ -f /usr/local/bin/chromedriver ]; then echo "ChromeDriver is installed"; else echo "ChromeDriver is NOT installed"; fi
+
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
     - name: Run Tests
-      run: |
-        ls /usr/local/bin/
-        ./gradlew test
+      run: ./gradlew test
 
   dependency-submission:
     runs-on: ubuntu-latest
