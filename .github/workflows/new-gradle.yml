@@ -33,6 +33,14 @@ jobs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
+    - name: Install Chrome browser
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
+    - name: Install ChromeDriver
+      uses: nanasess/setup-chromedriver@v1
+
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
